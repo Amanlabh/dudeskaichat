@@ -85,25 +85,29 @@ export default function ChatPage() {
     }
   }
 
-  const sanitizeResponse = (message: string) => {
-    return message
-      .replace(/cuet_data.csv|links.csv|list.csv/g, "")
-      .replace(/\*\*([^*]+)\*\*/g, "$1")
-      .replace(/analyzed the provided files|based on the `?`? file you provided,/g, "analyzed the relevant information")
-      .replace(/\*/g, "")
-      .replace(/\n/g, "<br />")
-      .replace(
-        /\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, // Corrected regex for markdown-style links
-        '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800 break-words">$1</a>'
-      )
-      .replace(/^\s*\*\s/gm, (match, index) => {
-        return `<ol class="list-decimal pl-5"><li>` + (index + 1) + "."
-      })
-      .replace(/\n/gm, "</li>")
-      .replace(/-+/gm, "</ol>")
-      .replace(/Please note that this list is based on the provided CSV data./g, "")
-      .replace(/Good day/g, "Hello")
-  }
+const sanitizeResponse = (message: string) => {
+  return message
+    .replace(/cuet_data.csv|links.csv|list.csv/g, "")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/analyzed the provided files|based on the `?`? file you provided,/g, "analyzed the relevant information")
+    .replace(/\*/g, "")
+    .replace(/\n/g, "<br />")
+    .replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, // Replace markdown-style links
+      '<button onclick="window.open(\'$2\', \'_blank\')" class="text-blue-600 underline hover:text-blue-800 break-words">Visit Here</button>'
+    )
+    .replace(
+      /(https?:\/\/[^\s]+)/g, // Replace raw URLs
+      '<button onclick="window.open(\'$1\', \'_blank\')" class="text-blue-600 underline hover:text-blue-800 break-words">Visit Here</button>'
+    )
+    .replace(/^\s*\*\s/gm, (match, index) => {
+      return `<ol class="list-decimal pl-5"><li>` + (index + 1) + "."
+    })
+    .replace(/\n/gm, "</li>")
+    .replace(/-+/gm, "</ol>")
+    .replace(/Please note that this list is based on the provided CSV data./g, "")
+    .replace(/Good day/g, "Hello")
+}
 
   const handleOptionClick = (option: string) => {
     if (isChatEnded) return
@@ -229,7 +233,7 @@ export default function ChatPage() {
                 <div className="flex items-start">
                   {m.role === "user" ? (
                     <>
-                      <div className="max-w-[80%] p-2 sm:p-3 rounded-xl shadow-md bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+                      <div className="max-w-[80%] sm:max-w-[80%] p-2 sm:p-3 rounded-xl shadow-md bg-gradient-to-r from-blue-500 to-blue-600 text-white">
                         <span
                           dangerouslySetInnerHTML={{
                             __html: sanitizeResponse(content),
@@ -264,7 +268,7 @@ export default function ChatPage() {
                           <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                         </svg>
                       </div>
-                      <div className="max-w-[40%] p-2 sm:p-3 rounded-xl shadow-md bg-white bg-opacity-90 backdrop-blur-md text-gray-800 border border-blue-100">
+                      <div className="max-w-[80%] sm:max-w-[80%] p-2 sm:p-3 rounded-xl shadow-md bg-white bg-opacity-90 backdrop-blur-md text-gray-800 border border-blue-100">
                         <span
                           dangerouslySetInnerHTML={{
                             __html: sanitizeResponse(content),
@@ -292,7 +296,7 @@ export default function ChatPage() {
                     <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                   </svg>
                 </div>
-                <div className="max-w-[40%] p-2 sm:p-3 rounded-xl bg-white bg-opacity-90 backdrop-blur-md text-gray-800 border border-blue-100">
+                <div className="max-w-[40%] sm:max-w-[80%] p-2 sm:p-3 rounded-xl bg-white bg-opacity-90 backdrop-blur-md text-gray-800 border border-blue-100">
                   <div className="flex space-x-1">
                     <div className="h-2 w-2 bg-blue-500 rounded-full animate-bounce delay-100"></div>
                     <div className="h-2 w-2 bg-blue-500 rounded-full animate-bounce delay-200"></div>
@@ -423,7 +427,7 @@ export default function ChatPage() {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder={isChatEnded ? "Chat has ended" : "Type a message..."}
-            className="flex-grow rounded-lg border border-blue-200 px-2 py-1 sm:px-3 sm:py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 bg-white text-base" // Ensure font size is 16px
+            className="flex-grow rounded-lg border border-blue-200 px-2 py-1 sm:px-3 sm:py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-300 bg-white text-base"
             disabled={isChatEnded}
           />
           <Button
@@ -435,7 +439,7 @@ export default function ChatPage() {
             {isLoading ? (
               <Loader2 className="h-3 w-3 sm:h-4 sm:w-4 animate-spin" />
             ) : (
-            <Send className="h-6 w-6 sm:h-7 sm:w-7" />
+              <Send className="h-6 w-6 sm:h-7 sm:w-7" />
             )}
           </Button>
         </div>
