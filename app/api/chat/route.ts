@@ -30,29 +30,30 @@ export async function POST(req: Request) {
     apiKey: gemini_token,
   })
 
-  const github = "https://raw.githubusercontent.com/Amanlabh/dudeskaichat/refs/heads/main/"
- const result = streamText({
-    model: google("gemini-1.5-pro-latest"),
+  const github = "https://raw.githubusercontent.com/Amanlabh/dudesk/refs/heads/main/"
+
+  const result = streamText({
+    model: google('gemini-1.5-pro-latest'),
     messages: [
       {
-        role: "user",
+        role: 'user',
         content: [
           {
-            type: "file",
-            data: github + "cuet_data.csv",
-            mimeType: "text/csv",
+            type: 'file',
+            data: readFileSync('./cuet_data.csv'),
+            mimeType: 'text/csv',
           },
           {
-            type: "file",
-            data: github + "links.csv",
-            mimeType: "text/csv",
+            type: 'file',
+            data: readFileSync('./links.csv'),
+            mimeType: 'text/csv',
           },
           {
-            type: "file",
-            data: github + "list.csv",
-            mimeType: "text/csv",
-          },
-        ],
+            type: 'file',
+            data: readFileSync('./list.csv'),
+            mimeType: 'text/csv',
+          }
+        ]
       },
       ...messages,
     ],
