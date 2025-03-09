@@ -92,10 +92,7 @@ const sanitizeResponse = (message: string) => {
     .replace(/analyzed the provided files|based on the `?`? file you provided,/g, "analyzed the relevant information")
     .replace(/\*/g, "")
     .replace(/\n/g, "<br />")
-    .replace(
-      /\[([^\]]+)\]\((https?:\/\/[^\s]+)\)/g, // Replace markdown-style links
-      '<button onclick="window.open(\'$2\', \'_blank\')" class="text-blue-600 underline hover:text-blue-800 break-words">Visit Here</button>'
-    )
+
     .replace(
       /(https?:\/\/[^\s]+)/g, // Replace raw URLs
       '<button onclick="window.open(\'$1\', \'_blank\')" class="text-blue-600 underline hover:text-blue-800 break-words">Visit Here</button>'
