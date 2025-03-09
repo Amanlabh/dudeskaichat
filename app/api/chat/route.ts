@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     apiKey: gemini_token,
   })
 
-  const github = "https://raw.githubusercontent.com/Amanlabh/dudesk/refs/heads/main/"
+  const github = "https://raw.githubusercontent.com/Amanlabh/dudeskaichat/refs/heads/main/"
  const result = streamText({
     model: google("gemini-1.5-pro-latest"),
     messages: [
